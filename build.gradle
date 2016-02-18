@@ -77,3 +77,18 @@ dependencies {
 task wrapper(type: Wrapper) {
     gradleVersion = gradleWrapperVersion
 }
+
+task stage() {
+    dependsOn assemble
+}
+
+tasks.stage.doLast() {
+    def name = "build/libs/${project.name}-${project.version}.war"
+    copy {
+        from(name) {
+            rename { 'openshift.jar' }
+        }
+        into 'build/libs/'
+    }
+}
+
